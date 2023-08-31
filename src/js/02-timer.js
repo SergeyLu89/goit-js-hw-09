@@ -12,7 +12,6 @@ const options = {
       refs.startBtn.removeAttribute('disabled');
     } else {
       Notiflix.Notify.failure('Please choose a date in the future');
-      //   window.alert('Please choose a date in the future');
     }
     timeDifference = selectedDates[0].getTime() - options.defaultDate.getTime();
     return { timeDifference };
@@ -22,7 +21,7 @@ const options = {
 const refs = {
   input: document.querySelector('#datetime-picker'),
   startBtn: document.querySelector('button[data-start]'),
-  value: document.querySelector('.value'),
+  timer: document.querySelector('.timer'),
   days: document.querySelector('[data-days]'),
   hours: document.querySelector('[data-hours]'),
   minutes: document.querySelector('[data-minutes]'),
@@ -39,7 +38,6 @@ let timerId = null;
 refs.startBtn.addEventListener('click', onStartBtnClick);
 
 function onStartBtnClick() {
-  //   convertMs(timeDifference);
   let timLeft = {
     days: 0,
     hours: 0,
@@ -68,7 +66,7 @@ function onStartBtnClick() {
   timerId = setInterval(() => {
     if (timeDifference > 1000) {
       timeDifference -= 1000;
-      console.log(timeDifference);
+
       convertMs(timeDifference);
       function addLeadingZero(value) {
         refs.days.textContent = `${value.days.toString().padStart(2, '0')}`;
@@ -83,47 +81,12 @@ function onStartBtnClick() {
       addLeadingZero(timLeft);
     } else {
       clearInterval(timerId);
-      console.log('TIMER OFF');
+      Notiflix.Notify.success('Time is over');
     }
   }, 1000);
 }
 
-// let timerId = null;
-// refs.startBtn.addEventListener('click', onStartBtnClick);
-
-// function onStartBtnClick() {
-//   convertMs(timeDifference);
-//   timerId = setInterval(() => {
-//     function addLeadingZero(value) {
-//       refs.days.textContent = `${value.days.toString().padStart(2, '0')}`;
-//       refs.hours.textContent = `${value.hours.toString().padStart(2, '0')}`;
-//       refs.minutes.textContent = `${value.minutes.toString().padStart(2, '0')}`;
-//       refs.seconds.textContent = `${value.seconds.toString().padStart(2, '0')}`;
-//     }
-//     addLeadingZero(timLeft);
-//   }, 1000);
-// }
-// let timLeft = {
-//   days: 0,
-//   hours: 0,
-//   minutes: 0,
-//   seconds: 0,
-// };
-// function convertMs(ms) {
-//   const second = 1000;
-//   const minute = second * 60;
-//   const hour = minute * 60;
-//   const day = hour * 24;
-
-//   const days = Math.floor(ms / day);
-//   const hours = Math.floor((ms % day) / hour);
-//   const minutes = Math.floor(((ms % day) % hour) / minute);
-//   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
-
-//   timLeft.days = days;
-//   timLeft.hours = hours;
-//   timLeft.minutes = minutes;
-//   timLeft.seconds = seconds;
-
-//   return { timLeft };
-// }
+refs.timer.style.marginTop = '24px';
+refs.timer.style.display = 'flex';
+refs.timer.style.gap = '24px';
+refs.timer.style.fontSize = '24px';
